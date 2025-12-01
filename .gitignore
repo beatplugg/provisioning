@@ -1,0 +1,23 @@
+# Ignore compiled files
+*.pyc
+__pycache__/
+
+# Ansible temporary files
+.ansible/
+*.retry
+
+# No secrets
+*.key
+*.pem
+*.token
+*.secret
+*.crt
+*passwd*
+*password*
+
+# Avoid configs from other tools
+.cache/
+.ssh/
+.kube/
+.config/k3s/
+.config/kube/
