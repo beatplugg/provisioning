@@ -9,7 +9,7 @@ data:
       scrape_timeout: 4s
 
     scrape_configs:
-      
+
       - job_name: "prometheus"
         static_configs:
         - targets: ["localhost:9090"]
@@ -26,54 +26,24 @@ data:
         - targets:
           - "kube-state-metrics.monitoring.svc.cluster.local:8080"
 
-      - job_name: "kube-apiserver"
+      - job_name: "kubelet"
+        metrics_path: /metrics
         scheme: https
         tls_config:
           insecure_skip_verify: true
         static_configs:
         - targets:
-          - "192.168.0.101:6443"
-
-      - job_name: "kubelet"
-        scheme: https
-        tls_config:
-          insecure_skip_verify: true
-        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        kubernetes_sd_configs:
-        - role: node
-        metrics_path: /metrics
+          - "192.168.0.101:10250"
+          - "192.168.0.102:10250"
+          - "192.168.0.103:10250"
 
       - job_name: "cadvisor"
+        metrics_path: /metrics/cadvisor
         scheme: https
         tls_config:
           insecure_skip_verify: true
-        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-        kubernetes_sd_configs:
-        - role: node
-        metrics_path: /metrics/cadvisor
-
-      - job_name: "kube-scheduler"
         static_configs:
         - targets:
-          - "127.0.0.1:10251"
-
-      - job_name: "kube-controller-manager"
-        static_configs:
-        - targets:
-          - "127.0.0.1:10252"
-
-      - job_name: "kube-proxy"
-        static_configs:
-        - targets:
-          - "127.0.0.1:10249"
-
-      - job_name: "coredns"
-        kubernetes_sd_configs:
-        - role: pod
-        relabel_configs:
-        - source_labels: [__meta_kubernetes_pod_label_k8s_app]
-          regex: coredns
-          action: keep
-        - source_labels: [__meta_kubernetes_pod_container_port_name]
-          regex: metrics
-          action: keep
+          - "192.168.0.101:10250"
+          - "192.168.0.102:10250"
+          - "192.168.0.103:10250"
