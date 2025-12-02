@@ -1,0 +1,10 @@
+---
+- name: Copy k3s airgap archive to nodes
+  hosts: k3s_nodes
+
+  tasks:
+    - name: Copy file to /home/rocky
+      copy:
+        src: /home/rocky/k3s-airgap-images-arm64.tar
+        dest: /home/rocky/k3s-airgap-images-arm64.tar
+        mode: '0644'
