@@ -15,7 +15,6 @@
       register: cmdline_file
 
     - name: Fail if cmdline.txt not found (not a Raspberry Pi firmware boot)
-        # Делаем защиту, чтобы playbook не применился случайно на других серверах
       fail:
         msg: "/boot/efi/cmdline.txt not found — this node does not use Raspberry Pi bootloader!"
       when: not cmdline_file.stat.exists
