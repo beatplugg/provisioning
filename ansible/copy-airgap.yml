@@ -1,6 +1,6 @@
 ---
 - name: Copy k3s airgap archive to nodes
-  hosts: k3s_nodes
+  hosts: k3s-nodes
 
   tasks:
     - name: Copy file to /home/rocky
