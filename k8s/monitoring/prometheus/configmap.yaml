@@ -6,8 +6,10 @@ data:
   prometheus.yml: |
     global:
       scrape_interval: 5s
+      scrape_timeout: 4s
 
     scrape_configs:
+      
       - job_name: "prometheus"
         static_configs:
         - targets: ["localhost:9090"]
@@ -21,4 +23,57 @@ data:
 
       - job_name: "kube-state-metrics"
         static_configs:
-        - targets: ["kube-state-metrics.monitoring.svc.cluster.local:8080"]
+        - targets:
+          - "kube-state-metrics.monitoring.svc.cluster.local:8080"
+
+      - job_name: "kube-apiserver"
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        static_configs:
+        - targets:
+          - "192.168.0.101:6443"
+
+      - job_name: "kubelet"
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+        - role: node
+        metrics_path: /metrics
+
+      - job_name: "cadvisor"
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+        - role: node
+        metrics_path: /metrics/cadvisor
+
+      - job_name: "kube-scheduler"
+        static_configs:
+        - targets:
+          - "127.0.0.1:10251"
+
+      - job_name: "kube-controller-manager"
+        static_configs:
+        - targets:
+          - "127.0.0.1:10252"
+
+      - job_name: "kube-proxy"
+        static_configs:
+        - targets:
+          - "127.0.0.1:10249"
+
+      - job_name: "coredns"
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_label_k8s_app]
+          regex: coredns
+          action: keep
+        - source_labels: [__meta_kubernetes_pod_container_port_name]
+          regex: metrics
+          action: keep
