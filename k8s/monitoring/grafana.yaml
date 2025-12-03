@@ -6,13 +6,11 @@ grafana:
   persistence:
     type: pvc
     enabled: true
-    existingClaim: grafana-data
-    storageClassName: ""
+    storageClassName: local-path
     accessModes:
       - ReadWriteOnce
     size: 2Gi
     mountPath: /var/lib/grafana
-    subPath: ""
 
   ingress:
     enabled: false
