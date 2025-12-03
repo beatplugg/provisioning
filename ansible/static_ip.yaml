@@ -10,9 +10,3 @@
         ipv4.gateway 192.168.0.1
         ipv4.dns 192.168.0.1
 
-    - name: Bring interface down
-      command: nmcli connection down "Wired connection 1"
-      ignore_errors: yes
-
-    - name: Bring interface up
-      command: nmcli connection up "Wired connection 1"
