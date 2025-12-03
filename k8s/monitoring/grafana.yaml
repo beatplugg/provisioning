@@ -1,0 +1,20 @@
+grafana:
+  enabled: true
+
+  persistence:
+    type: pvc
+    enabled: true
+    existingClaim: grafana-data
+    storageClassName: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+    mountPath: /var/lib/grafana
+    subPath: ""
+
+  ingress:
+    enabled: false
+
+  service:
+    type: NodePort
+    nodePort: 30000
