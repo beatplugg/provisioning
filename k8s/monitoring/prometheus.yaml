@@ -13,8 +13,13 @@ nodeExporter:
 
 prometheus:
   enabled: true
-
+  service:
+    type: NodePort
+    nodePort: 30001
+    port: 9090
   prometheusSpec:
+
+    replicas: 1
 
     global:
       scrape_interval: 5s
